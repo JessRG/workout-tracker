@@ -13,6 +13,7 @@ WEIGHT_KG = int(os.getenv("WEIGHT_KG", ""))
 HEIGHT_CM = int(os.getenv("HEIGHT_CM", ""))
 AGE = int(os.getenv("AGE", ""))
 SHEET_ID = os.getenv("SHEET_ID", "")
+SHEET_TOKEN = os.getenv("SHEET_TOKEN", "")
 
 BASE_URL = "https://app.100daysofpython.dev"
 SHEET_URL = "https://api.sheety.co"
@@ -39,6 +40,10 @@ result = response.json()
 today = datetime.now().strftime("%d/%m/%Y")
 now_time = datetime.now().strftime("%X")
 
+sheet_headers = {
+    "Authorization": f"Bearer {SHEET_TOKEN}",
+}
+
 for exercise in result.get("exercises"):
     workout_inputs = {
         "workout": {
@@ -50,5 +55,5 @@ for exercise in result.get("exercises"):
         },
     }
 
-    sheet_response = requests.post(url=SHEET_ENDPOINT, json=workout_inputs)
+    sheet_response = requests.post(url=SHEET_ENDPOINT, json=workout_inputs, headers=sheet_headers)
     print(sheet_response.text)
